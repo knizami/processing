@@ -212,6 +212,21 @@
 	     classpath="jre/downloader.jar" />
   </target>
 
+<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+         classpath="../app/lib/checkstyle-7.3-all.jar"/>
+
+         <target name="checkstyle"
+        description="Generates a report of code convention violations.">
+
+  <checkstyle config="google_checks.xml"
+              failureProperty="checkstyle.failure"
+              failOnViolation="false">
+    <formatter type="xml" tofile="checkstyle_report.xml"/>
+    <fileset dir="../app/src" includes="**/*.java"/>
+  </checkstyle>
+
+</target>
+
   <target name="jre-download" depends="jre-check, downloader-setup"
           unless="jre.tgz.downloaded">
     <!-- we normally download a JRE, except on arm -->
@@ -282,6 +297,7 @@
     <include name="app/lib/jna-platform.jar" />
     <include name="app/lib/ant.jar" />
     <include name="app/lib/ant-launcher.jar" />
+    <include name="app/lib/checkstyle-7.3-all.jar" />
   </fileset>
 
   <target name="build" description="Build Processing.">
@@ -750,7 +766,7 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
-  <target name="linux-build" depends="ignore-tools, check-linux-arm32, revision-check, linux-check-os, jre-download, subprojects-build, subprojects-build-linux-arm32" description="Build Linux version">
+  <target name="linux-build" depends="ignore-tools, check-linux-arm32, revision-check, linux-check-os, jre-download, subprojects-build, subprojects-build-linux-arm32, checkstyle" description="Build Linux version">
     <mkdir dir="linux/work" />
     
     <copy todir="linux/work">
