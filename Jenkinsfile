@@ -4,6 +4,6 @@ stage('Build') {
     sh 'echo hello world'
     checkout scm
     dir('build')
-    sh 'ant'
+    sh 'ant -f ./build.xml'
 }
 }
