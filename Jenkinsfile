@@ -3,7 +3,7 @@ node {
 stage('Build') {
     sh 'echo hello world'
     checkout scm
-    dir (./build)
+    dir ('./build')
     sh 'ant'
 }
 }
